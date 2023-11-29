@@ -35,8 +35,9 @@ public class AutorDao implements iDao <Autor>{
     public Autor update(Autor autor) {
         Autor returnedAuthor = null;
         for (Autor a:autores) {
-            if(a.equals(autor)){
+            if (a.equals(autor)) {
                 returnedAuthor = autor;
+                break;
             }
         }
         return autor;
