@@ -3,6 +3,7 @@ package com.biblioteca.Biblioteca.services;
 import com.biblioteca.Biblioteca.entity.Autor;
 import com.biblioteca.Biblioteca.repository.AutorDao;
 import com.biblioteca.Biblioteca.repository.iDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 public class AutorService {
     private iDao <Autor> autorDao;
 
+    @Autowired
     public AutorService(iDao autorDao) {
         this.autorDao = autorDao;
     }

@@ -2,27 +2,45 @@ package com.biblioteca.Biblioteca.controller;
 
 import com.biblioteca.Biblioteca.entity.Autor;
 import com.biblioteca.Biblioteca.services.AutorService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-@RestController("/autor")
+@RestController
+@RequestMapping("/autor")
 public class AutorController {
     private final AutorService service;
 
+    @Autowired
     public AutorController(AutorService service) {
         this.service = service;
     }
 
-    public Autor create(Autor autor) {return service.create(autor);};
+    @PostMapping("/create")
+    public Autor create(@RequestBody Autor autor) {return service.create(autor);};
+    @DeleteMapping("/delete/{id}")
+    public void delete(@RequestBody @PathVariable Long id) {service.delete(id);};
 
-    public void delete(Long id) {service.delete(id);};
-
-    @GetMapping("/autor/getAll")
-    public ArrayList<Autor> getAll() {return service.getAll();};
-
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAll() {
+        ArrayList<Autor> autores =  service.getAll();
+        if(autores==null) {
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        } else {
+            return ResponseEntity.ok(autores);
+        }
+    };
+    @PutMapping("/update")
     public Autor update(Autor autor) {return service.update(autor);};
 
-    @GetMapping("/autor/searchById")
-    public Autor searchById(Long id) {return service.searchById(id);};
+    @GetMapping("/searchById/{id}")
+    public ResponseEntity<?> searchById(@PathVariable  Long id) {
+        Autor autor = service.searchById(id);
+        if (autor == null) {
+            return ResponseEntity.badRequest().body("Author not found");
+        } else {
+            return ResponseEntity.ok(autor);
+        }
+    };
 }
