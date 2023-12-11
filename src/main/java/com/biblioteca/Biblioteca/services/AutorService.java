@@ -1,36 +1,29 @@
 package com.biblioteca.Biblioteca.services;
 
 import com.biblioteca.Biblioteca.entity.Autor;
-import com.biblioteca.Biblioteca.repository.AutorDao;
-import com.biblioteca.Biblioteca.repository.iDao;
+import com.biblioteca.Biblioteca.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AutorService {
-    private iDao <Autor> autorDao;
+    private AutorRepository autorRepository;
 
     @Autowired
-    public AutorService(iDao autorDao) {
-        this.autorDao = autorDao;
+    public AutorService(AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
     }
 
-    public iDao getAutorDao() {
-        return autorDao;
-    }
+    public Autor create(Autor autor){return autorRepository.save(autor);};
 
-    public void setAutorDao(iDao autorDao) {
-        this.autorDao = autorDao;
-    }
+    public void delete(Long id) {autorRepository.deleteById(id);}
 
-    public Autor create(Autor autor) {return autorDao.create(autor);};
+    public Optional<Autor> searchById(Long id) {return autorRepository.findById(id);};
 
-    public void delete(Long id) {autorDao.delete(id);};
+    public List<Autor> getAll() {return autorRepository.findAll();};
 
-    public ArrayList<Autor> getAll() {return autorDao.getAll();};
-
-    public Autor update(Autor autor) {return autorDao.update(autor);};
-
-    public Autor searchById(Long id) {return autorDao.searchById(id);};
+    public Autor update(Autor autor) {return autorRepository.save(autor);};
 }

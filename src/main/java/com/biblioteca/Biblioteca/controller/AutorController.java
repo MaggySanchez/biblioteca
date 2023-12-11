@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/autor")
 public class AutorController {
@@ -24,9 +27,9 @@ public class AutorController {
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
-        ArrayList<Autor> autores =  service.getAll();
-        if(autores==null) {
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+        List<Autor> autores =  service.getAll();
+        if(autores.isEmpty()) {
+            return ResponseEntity.status(404).body("Authors not fond");
         } else {
             return ResponseEntity.ok(autores);
         }
@@ -36,8 +39,8 @@ public class AutorController {
 
     @GetMapping("/searchById/{id}")
     public ResponseEntity<?> searchById(@PathVariable  Long id) {
-        Autor autor = service.searchById(id);
-        if (autor == null) {
+        Optional<Autor> autor = service.searchById(id);
+        if (autor.isEmpty()) {
             return ResponseEntity.badRequest().body("Author not found");
         } else {
             return ResponseEntity.ok(autor);
